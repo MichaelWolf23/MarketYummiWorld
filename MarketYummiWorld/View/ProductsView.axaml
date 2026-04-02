@@ -1,0 +1,56 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:DeliveryApp.Converters"
+             x:Class="MarketYummiWorld.Views.ProductsView"
+             x:Name="Root">
+    <UserControl.Resources>
+        <conv:StockLevelToBrushConverter x:Key="StockConverter"/>
+        <conv:ExpiryToTextConverter x:Key="ExpiryTextConverter"/>
+        <conv:ExpiryToBrushConverter x:Key="ExpiryBrushConverter"/>
+    </UserControl.Resources>
+
+    <DockPanel Margin="16">
+        <!-- Панель фильтров -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+            <TextBox Width="280" Watermark="🔍 Поиск по названию..." 
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Width="200" ItemsSource="{Binding Categories}" 
+                      SelectedItem="{Binding SelectedCategory}" DisplayMemberBinding="{Binding Name}"/>
+            <Button Content="➕ Добавить" Command="{Binding AddProductCommand}"/>
+            <Button Content="🔄 Обновить" Command="{Binding RefreshCommand}"/>
+        </StackPanel>
+
+        <!-- Таблица товаров -->
+        <DataGrid ItemsSource="{Binding Products}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" CanUserResizeColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="2*"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:C2}}" Width="0.8*"/>
+                <DataGridTextColumn Header="Ед. изм." Binding="{Binding Unit}" Width="0.6*"/>
+                <DataGridTextColumn Header="Остаток" Binding="{Binding StockQuantity}" Width="0.7*"/>
+                
+                <DataGridTemplateColumn Header="Статус остатка" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding StockQuantity, Converter={StaticResource StockConverter}}" 
+                                    CornerRadius="4" Padding="4" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding StockQuantity}" Foreground="White" FontWeight="SemiBold"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Годен до" Binding="{Binding ExpiryDate, StringFormat=dd.MM.yyyy}" Width="1*"/>
+                
+                <DataGridTemplateColumn Header="Срок годности" Width="1.2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ExpiryDate, Converter={StaticResource ExpiryTextConverter}}"
+                                       Foreground="{Binding ExpiryDate, Converter={StaticResource ExpiryBrushConverter}}"
+                                       FontWeight="Medium" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

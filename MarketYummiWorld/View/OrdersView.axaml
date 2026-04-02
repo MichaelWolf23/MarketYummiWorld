@@ -1,0 +1,54 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:DeliveryApp.Converters"
+             x:Class="MarketYummiWorld.Views.OrdersView">
+    <UserControl.Resources>
+        <conv:OrderStatusToBrushConverter x:Key="OrderStatusConverter"/>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="*, Auto, *" Margin="16" ColumnDefinitions="*">
+        <!-- Верх: Список заказов -->
+        <DataGrid Grid.Row="0" ItemsSource="{Binding Orders}" AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedOrder}" SelectionMode="Single" Margin="0,0,0,8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding OrderId}" Width="0.5*"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" Width="1.2*"/>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding CustomerFullName}" Width="2*"/>
+                <DataGridTextColumn Header="Сумма" Binding="{Binding TotalAmount, StringFormat={}{0:C2}}" Width="1*"/>
+                <DataGridTemplateColumn Header="Статус" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding OrderStatus}" 
+                                       Foreground="{Binding OrderStatus, Converter={StaticResource OrderStatusConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Центр: Управление статусами -->
+        <Border Grid.Row="1" Background="#F5F7FA" CornerRadius="6" Padding="12" Margin="0,4">
+            <UniformGrid Columns="4" HorizontalAlignment="Stretch">
+                <ComboBox ItemsSource="{Binding OrderStatuses}" 
+                          SelectedItem="{Binding SelectedOrder.OrderStatus}"
+                          Watermark="Статус заказа" Margin="0,0,8,0"/>
+                <ComboBox ItemsSource="{Binding PaymentMethods}" 
+                          SelectedItem="{Binding SelectedOrder.PaymentMethod}"
+                          Watermark="Способ оплаты" Margin="0,0,8,0"/>
+                <Button Content="💾 Сохранить" Command="{Binding UpdateOrderCommand}" 
+                        IsEnabled="{Binding SelectedOrder.(validation:Validation.HasErrors), Converter={x:Static BooleanNegationConverter.Instance}}"/>
+                <Button Content="🗑 Отмена" Command="{Binding CancelEditCommand}"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Низ: Позиции заказа (Master-Detail) -->
+        <DataGrid Grid.Row="2" ItemsSource="{Binding SelectedOrder.OrderItems}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Товар" Binding="{Binding ProductName}" Width="3*"/>
+                <DataGridTextColumn Header="Кол-во" Binding="{Binding Quantity}" Width="0.8*"/>
+                <DataGridTextColumn Header="Цена покупки" Binding="{Binding PriceAtPurchase, StringFormat={}{0:C2}}" Width="1.2*"/>
+                <DataGridTextColumn Header="Итого" Binding="{Binding TotalItemPrice, StringFormat={}{0:C2}}" Width="1.2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

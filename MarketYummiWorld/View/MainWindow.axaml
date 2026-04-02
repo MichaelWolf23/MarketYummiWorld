@@ -1,0 +1,19 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MarketYummiWorld.MainWindow"
+        Title="MarketYummiWorld">
+    <Grid RowDefinitions="Auto, *">
+        <TextBlock Grid.Row="0" Text="Панель управления доставкой" FontSize="18" FontWeight="Bold" Margin="16,12"/>
+        
+        <TabControl Grid.Row="1" Margin="12" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" TabStripPlacement="Left">
+            <TabItem Header="👥 Клиенты" Content="{x:Static views:ClientsView.Instance}"/>
+            <TabItem Header="📦 Товары" Content="{x:Static views:ProductsView.Instance}"/>
+            <TabItem Header="🛒 Заказы" Content="{x:Static views:OrdersView.Instance}"/>
+            <TabItem Header="🚚 Доставки" Content="{x:Static views:DeliveriesView.Instance}"/>
+            <TabItem Header="🏍 Курьеры" Content="{x:Static views:CouriersView.Instance}"/>
+        </TabControl>
+    </Grid>
+</Window>

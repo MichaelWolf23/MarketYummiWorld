@@ -1,0 +1,61 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Panel Background="White"/>
+    </Design.PreviewWith>
+
+    <!-- Кнопки -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="#2563EB"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="14,7"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
+    <Style Selector="Button:pointerover">
+        <Setter Property="Background" Value="#1D4ED8"/>
+    </Style>
+    <Style Selector="Button:disabled">
+        <Setter Property="Background" Value="#94A3B8"/>
+        <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+
+    <!-- DataGrid -->
+    <Style Selector="DataGrid">
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+
+    <!-- Заголовки колонок -->
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="#E2E8F0"/>
+        <Setter Property="Foreground" Value="#334155"/>
+        <Setter Property="BorderBrush" Value="#CBD5E1"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style Selector="DataGridColumnHeader:pointerover">
+        <Setter Property="Background" Value="#D1D5DB"/>
+    </Style>
+
+    <!-- Фон строк (без :nth-child, т.к. он ломается при UI-виртуализации) -->
+    <Style Selector="DataGridRow">
+        <Setter Property="Background" Value="#FFFFFF"/>
+    </Style>
+    <Style Selector="DataGridRow:selected">
+        <Setter Property="Background" Value="#DBEAFE"/>
+    </Style>
+    <Style Selector="DataGridRow:pointerover /template/ ContentPresenter#PART_Border">
+        <Setter Property="Background" Value="#F8FAFC"/>
+    </Style>
+
+    <!-- TextBox & ComboBox -->
+    <Style Selector="TextBox, ComboBox">
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+</Styles>
